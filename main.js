@@ -8,7 +8,7 @@ function update(ms) {
 }
 
 window.addEventListener("keypress", function(e){if(e.charCode === KEY_SPACE) toggleTimer();}, false);
-window.addEventListener("click", toggleTimer, false);
+window.addEventListener("touchstart", toggleTimer, false);
 
 function toggleTimer() {
 	if (timer.isRunning()) {

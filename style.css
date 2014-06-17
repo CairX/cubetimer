@@ -18,14 +18,21 @@
 	font-style: italic;
 }
 
+html, body {
+	height: 100%;
+}
+
 html {
 	font: 16px/1 Roboto, sans-serif;
-	/*font-size: 5vw;*/
 }
 body {
 	color: white;
 	background: #111;
-	text-align: center;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 button {
 	color: white;

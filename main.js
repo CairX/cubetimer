@@ -3,8 +3,8 @@ var time = document.getElementById('time');
 var timer = new Timer();
 var KEY_SPACE = 32;
 
-function update() {
-	time.innerHTML = TimeFormatter.format(timer.current(), '%%M:%S:%h');
+function update(ms) {
+	time.innerHTML = TimeFormatter.format(ms, '%%M:%S:%h');
 }
 
 window.addEventListener("keypress", function(e){if(e.charCode === KEY_SPACE) toggleTimer();}, false);
@@ -14,9 +14,14 @@ function toggleTimer() {
 	if (timer.isRunning()) {
 		window.clearInterval(interval);
 		timer.stop();
-		time.innerHTML = TimeFormatter.format(timer.time(), '%%M:%S:%h');
+		update(timer.time());
+	} else if(timer.time()) {
+		timer.reset();
+		update(0);
 	} else {
 		timer.start();
-		interval = window.setInterval(update, 10);
+		interval = window.setInterval(function() {
+			update(timer.current());
+		}, 10);
 	}
 };

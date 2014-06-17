@@ -10,10 +10,15 @@ Timer.prototype.current = function() {
     return Date.now() - this.startDate;
 };
 Timer.prototype.time = function() {
+	if(this.stopDate===null) return null;
     return this.stopDate - this.startDate;
 };
 Timer.prototype.isRunning = function() {
     return (this.startDate != null && this.stopDate == null);
+};
+Timer.prototype.reset = function() {
+    this.startDate = null;
+    this.stopDate = null;
 };
 
 

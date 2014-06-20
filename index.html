@@ -8,7 +8,21 @@
         <script src="timer.js"></script>
     </head>
     <body>
-        <div id="time">00:00:00</div>
+	
+		<section id="pageStart">
+			<select id="selUsers"></select>
+			<select id="selEvents"></select>
+			<select id="selCountdown">
+				<option value="0">Off</option>
+				<option value="5000">5 sec</option>
+				<option value="10000">10 sec</option>
+				<option value="15000">15 sec</option>
+			</select>
+		</section>
+	
+		<section id="pageTimer">
+ 	       <div id="time">00:00.000</div>
+		</section>
 		
         <script src="main.js"></script>
     </body>

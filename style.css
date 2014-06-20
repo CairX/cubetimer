@@ -45,4 +45,10 @@ button {
 #time {
 	font-size: 20vw;
 	font-weight: lighter;
+	cursor: default;
+}
+
+
+section {
+	display: none;
 }

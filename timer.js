@@ -56,7 +56,7 @@ TimeFormatter.replace = function(milliseconds, directive, s) {
         case '%%f':
             return s.replace(directive, TimeFormatter.zero(milliseconds, 3));
         case '%h':
-            return s.replace(directive, String(TimeFormatter.zero(milliseconds % 1000, 3)).substring(0, 2));
+            return s.replace(directive, String(TimeFormatter.zero(milliseconds % 1000, 3)));
     }
 };
 TimeFormatter.zero = function(s, length) {

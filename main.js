@@ -7,27 +7,7 @@ function vibrate(ms) {
     }
 }
 
-var interval;
-var time = document.getElementById('time');
-var result = document.getElementById('result');
-var selEvents = document.getElementById('selEvents');
-var selUsers = document.getElementById('selUsers');
-var selCountdown = document.getElementById('selCountdown');
-
-var pages = {
-    "settings": document.getElementById('pageSettings'),
-    "timer": document.getElementById('pageTimer'),
-    "result": document.getElementById('pageResult')
-};
-
-var btnInitTimer = document.getElementById('btnInitTimer');
-btnInitTimer.addEventListener("click", initTimer, false);
-
-var btnRetry = document.getElementById('btnRetry');
-btnRetry.addEventListener("click", initTimer, false);
-
-var btnSettings = document.getElementById('btnSettings');
-btnSettings.addEventListener("click", showSettings, false);
+var pages;
 
 var state;
 var STATE_SETTINGS=0,
@@ -40,14 +20,6 @@ var STATE_SETTINGS=0,
 
 var KEY_SPACE = 32;
 var upBetween = false;
-
-window.addEventListener("keydown", eventHandler, false);
-window.addEventListener("keyup", eventHandler, false);
-window.addEventListener("touchstart", eventHandler, false);
-window.addEventListener("touchend", eventHandler, false);
-
-
-showSettings();
 
 
 function showSettings() {
@@ -223,3 +195,34 @@ function submitToFRURUF() {
 function timeSubmitted(e) {
     console.debug("timeSubmitted", e.target.response);
 }
+
+window.addEventListener('load', function() {
+    window.addEventListener("keydown", eventHandler, false);
+    window.addEventListener("keyup", eventHandler, false);
+    window.addEventListener("touchstart", eventHandler, false);
+    window.addEventListener("touchend", eventHandler, false);
+
+    var btnInitTimer = document.getElementById('btnInitTimer');
+    btnInitTimer.addEventListener("click", initTimer, false);
+
+    var btnRetry = document.getElementById('btnRetry');
+    btnRetry.addEventListener("click", initTimer, false);
+
+    var btnSettings = document.getElementById('btnSettings');
+    btnSettings.addEventListener("click", showSettings, false);
+
+    var interval;
+    var time = document.getElementById('time');
+    var result = document.getElementById('result');
+    var selEvents = document.getElementById('selEvents');
+    var selUsers = document.getElementById('selUsers');
+    var selCountdown = document.getElementById('selCountdown');
+
+    pages = {
+        "settings": document.getElementById('pageSettings'),
+        "timer": document.getElementById('pageTimer'),
+        "result": document.getElementById('pageResult')
+    };
+
+    showSettings();
+}, false);

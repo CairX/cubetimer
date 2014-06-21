@@ -36,26 +36,32 @@ body {
 }
 
 button {
+	display: block;
 	color: white;
 	font-size: 2em;
 	text-transform: uppercase;
 	background: rgba(255,255,255,0.2);
 	cursor: pointer;
 	border: 0;
+	margin: 0.5em auto 0 auto;
+	padding: 0.3em 0.5em;
 }
 button:hover {
 	background: rgba(255,255,255,0.3);
 }
 
-#time {
+#time, #result {
 	font-size: 20vw;
 	font-weight: lighter;
 	cursor: default;
+	color: #999;
 }
 #time.countdown {
-	color: #ffaaaa;
+	color: #ff9999;
 }
-
+#result {
+	color: #fff;
+}
 
 section {
 	display: none;
@@ -64,7 +70,3 @@ section {
 
 
 
-#btnInitTimer {
-	display: block;
-	margin: 20px auto;
-}

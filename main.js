@@ -1,3 +1,11 @@
+navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+function vibrate(ms) {
+	if(navigator.vibrate) {
+		navigator.vibrate(ms);
+	}
+}
+
+
 var interval;
 var time = document.getElementById('time');
 var result = document.getElementById('result');
@@ -56,6 +64,7 @@ function eventHandler(e) {
 		case STATE_WAIT_FOR_COUNTDOWN:
 		if((e.type==="keydown" && e.keyCode===KEY_SPACE) || (e.type==="touchstart")) {
 			state = STATE_COUNTDOWN;
+			upBetween = false;
 			Timer.start();
 			interval = window.setInterval(function() {
 				updateTime(Timer.getTime());
@@ -64,6 +73,7 @@ function eventHandler(e) {
 					console.debug("force start timer");
 					clearInterval(interval);
 					startTimer();
+					vibrate(100);
 				}
 			}, 10);
 		}
@@ -81,14 +91,15 @@ function eventHandler(e) {
 		
 		case STATE_WAIT_FOR_TIMER:
 		if((e.type==="keydown" && e.keyCode===KEY_SPACE) || (e.type==="touchstart")) {
-			console.debug("start timer!");					
+			upBetween = false;
+			console.debug("start timer!");				
 			startTimer();
 		}
 		break;
 		
 		case STATE_TIMER:
-		console.debug(e);
 		if(upBetween && ((e.type==="keydown" && e.keyCode===KEY_SPACE) || e.type==="touchstart")) {
+			e.preventDefault();
 			stopTimer();
 		} else if(!upBetween && ((e.type==="keyup" && e.keyCode===KEY_SPACE) || e.type==="touchend")) {
 			upBetween = true;

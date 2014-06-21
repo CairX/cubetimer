@@ -5,11 +5,10 @@
         <title>CubeTimer</title>
         <link href="style.css" type="text/css" rel="stylesheet" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <script src="timer.js"></script>
     </head>
     <body>
 	
-		<section id="pageStart">
+		<section id="pageSettings">
 			<select id="selUsers"></select>
 			<select id="selEvents"></select>
 			<select id="selCountdown">
@@ -18,12 +17,22 @@
 				<option value="10000">10 sec</option>
 				<option value="15000">15 sec</option>
 			</select>
+
+			<button type="button" id="btnInitTimer">OK</button>
 		</section>
 	
 		<section id="pageTimer">
  	       <div id="time">00:00.000</div>
 		</section>
 		
+        <section id="pageResult">
+ 	       <div id="result"></div>
+		   <button type="button" id="btnRetry">Retry</button>
+		   <button type="button" id="btnSettings">Change settings</button>
+		</section>
+		
+        <script src="Timer.js"></script>
+        <script src="TimeFormatter.js"></script>
         <script src="main.js"></script>
     </body>
 </html>

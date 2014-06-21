@@ -1,31 +1,150 @@
 var interval;
 var time = document.getElementById('time');
+var result = document.getElementById('result');
 var selEvents = document.getElementById('selEvents');
 var selUsers = document.getElementById('selUsers');
+var selCountdown = document.getElementById('selCountdown');
 
-var pageStart = document.getElementById('pageStart');
-var pageTimer = document.getElementById('pageTimer');
-var timer = new Timer();
+var pages = {
+	"settings": document.getElementById('pageSettings'),
+	"timer": document.getElementById('pageTimer'),
+	"result": document.getElementById('pageResult')
+};
+
+var btnInitTimer = document.getElementById('btnInitTimer');
+btnInitTimer.addEventListener("click", initTimer, false);
+
+var btnRetry = document.getElementById('btnRetry');
+btnRetry.addEventListener("click", initTimer, false);
+
+var btnSettings = document.getElementById('btnSettings');
+btnSettings.addEventListener("click", showSettings, false);
+
+var state;
+var STATE_SETTINGS=0,
+	STATE_WAIT_FOR_COUNTDOWN=1,
+	STATE_WAIT_FOR_TIMER=2,
+	STATE_COUNTDOWN=3,
+	STATE_TIMER=4,
+	STATE_RESULT=5
+;
+
 var KEY_SPACE = 32;
+var upBetween = false;
 
-window.addEventListener("keypress", function(e){if(e.charCode === KEY_SPACE) toggleTimer();}, false);
-window.addEventListener("touchstart", toggleTimer, false);
-
-
-loadUsers();
-loadEvents();
-
-
-//TODO: page navigator
-pageStart.style.display = "block";
+window.addEventListener("keydown", eventHandler, false);
+window.addEventListener("keyup", eventHandler, false);
+window.addEventListener("touchstart", eventHandler, false);
+window.addEventListener("touchend", eventHandler, false);
 
 
+showSettings();
+
+
+function showSettings() {
+	loadUsers();
+	loadEvents();
+	showPage("settings");
+	state = STATE_SETTINGS;
+}
+
+
+function eventHandler(e) {
+	
+	switch(state) {
+	
+		case STATE_WAIT_FOR_COUNTDOWN:
+		if((e.type==="keydown" && e.keyCode===KEY_SPACE) || (e.type==="touchstart")) {
+			state = STATE_COUNTDOWN;
+			Timer.start();
+			interval = window.setInterval(function() {
+				updateTime(Timer.getTime());
+				
+				if(Timer.getTime()>=0) {
+					console.debug("force start timer");
+					clearInterval(interval);
+					startTimer();
+				}
+			}, 10);
+		}
+		break;
+		
+		case STATE_COUNTDOWN:
+		if((e.type==="keyup" && e.keyCode===KEY_SPACE) || (e.type==="touchend")) {
+			console.debug("start timer");
+			clearInterval(interval);
+			console.debug("start timer");
+			startTimer();
+			upBetween = true;
+		}
+		break;
+		
+		case STATE_WAIT_FOR_TIMER:
+		if((e.type==="keydown" && e.keyCode===KEY_SPACE) || (e.type==="touchstart")) {
+			console.debug("start timer!");					
+			startTimer();
+		}
+		break;
+		
+		case STATE_TIMER:
+		console.debug(e);
+		if(upBetween && ((e.type==="keydown" && e.keyCode===KEY_SPACE) || e.type==="touchstart")) {
+			stopTimer();
+		} else if(!upBetween && ((e.type==="keyup" && e.keyCode===KEY_SPACE) || e.type==="touchend")) {
+			upBetween = true;
+		}
+		break;
+	}
+}
+
+function startTimer() {
+	state = STATE_TIMER;
+	time.classList.remove("countdown");
+	Timer.reset();
+	Timer.start();
+	interval = window.setInterval(function() {
+		updateTime(Timer.getTime());
+	}, 10);
+}
+
+function stopTimer() {
+	Timer.stop();
+	clearInterval(interval);
+	state = STATE_RESULT;
+	result.innerHTML = TimeFormatter.format(Timer.getTime(), '%%M:%S.%h');
+	showPage("result");
+	
+}
+
+
+function initTimer() {
+	showPage("timer");
+	
+	if(selCountdown.value>0) {
+		state = STATE_WAIT_FOR_COUNTDOWN;
+		time.classList.add("countdown");
+		Timer.reset(-parseInt(selCountdown.value));
+		updateTime(-parseInt(selCountdown.value));
+	} else {
+		state = STATE_WAIT_FOR_TIMER;
+		time.classList.remove("countdown");
+		Timer.reset();
+		updateTime(0);
+	}
+}
+
+
+function showPage(page) {
+	var sections = document.querySelectorAll("section");
+	for(var i=0; i<sections.length; i++) {
+		sections[i].style.display = "none";
+	}
+	pages[page].style.display = "block";
+}
 
 
 
-
-
-function update(ms) {
+function updateTime(ms) {
 	time.innerHTML = TimeFormatter.format(ms, '%%M:%S.%h');
 }
 
@@ -77,34 +196,18 @@ function loadEventsCallback(e) {
 }
 
 
-function toggleTimer() {
-	if (timer.isRunning()) {
-		window.clearInterval(interval);
-		timer.stop();
-		update(timer.time());
-		
-		var formData = new FormData();
-		formData.append("key", "fWG345wgQqnj");
-		formData.append("username", "test");
-		formData.append("time", timer.time());
-		formData.append("event", "333oh");		
-		
-		var xhr = new XMLHttpRequest();
-		xhr.open("post", "http://api.fruruf.se/add", true);
-		xhr.onload = timeSubmitted;
-		xhr.send(formData);
-		console.debug("Submit time to fruruf");
-		
-		
-	} else if(timer.time()) {
-		timer.reset();
-		update(0);
-	} else {
-		timer.start();
-		interval = window.setInterval(function() {
-			update(timer.current());
-		}, 10);
-	}
+function submitToFRURUF() {		
+	var formData = new FormData();
+	formData.append("key", "fWG345wgQqnj");
+	formData.append("username", "test");
+	formData.append("time", timer.time());
+	formData.append("event", "333oh");		
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("post", "http://api.fruruf.se/add", true);
+	xhr.onload = timeSubmitted;
+	xhr.send(formData);
+	console.debug("Submit time to fruruf");
 }
 
 function timeSubmitted(e) {

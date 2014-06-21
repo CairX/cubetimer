@@ -34,12 +34,17 @@ body {
 	justify-content: center;
 	align-items: center;
 }
+
 button {
 	color: white;
-	font-size: 2vw;
+	font-size: 2em;
 	text-transform: uppercase;
-	background: transparent;
+	background: rgba(255,255,255,0.2);
+	cursor: pointer;
 	border: 0;
+}
+button:hover {
+	background: rgba(255,255,255,0.3);
 }
 
 #time {
@@ -47,8 +52,19 @@ button {
 	font-weight: lighter;
 	cursor: default;
 }
+#time.countdown {
+	color: #ffaaaa;
+}
 
 
 section {
 	display: none;
+}
+
+
+
+
+#btnInitTimer {
+	display: block;
+	margin: 20px auto;
 }

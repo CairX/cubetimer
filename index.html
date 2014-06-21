@@ -2,9 +2,10 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
         <title>CubeTimer</title>
         <link href="style.css" type="text/css" rel="stylesheet" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     </head>
     <body>
 	
@@ -17,20 +18,19 @@
 				<option value="10000">10 sec</option>
 				<option value="15000">15 sec</option>
 			</select>
-
 			<button type="button" id="btnInitTimer">OK</button>
 		</section>
-	
+
 		<section id="pageTimer">
- 	       <div id="time">00:00.000</div>
+ 	       <div id="time">00:00.00</div>
 		</section>
-		
+
         <section id="pageResult">
  	       <div id="result"></div>
 		   <button type="button" id="btnRetry">Retry</button>
 		   <button type="button" id="btnSettings">Change settings</button>
 		</section>
-		
+
         <script src="Timer.js"></script>
         <script src="TimeFormatter.js"></script>
         <script src="main.js"></script>

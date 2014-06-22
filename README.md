@@ -1,5 +1,6 @@
-cubetimer
-=========
+Cube Timer
+==========
+Web based Rubik's cube timer.
 
 Code format
 -----------
